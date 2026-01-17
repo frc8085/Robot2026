@@ -25,7 +25,7 @@ public class RobotContainer {
   public final DriveSubsystem drivetrain = new DriveSubsystem();
   public final LimelightSubsystem limelight = new LimelightSubsystem();
 
-  private final SendableChooser<Command> autoChooser;
+//  private final SendableChooser<Command> autoChooser;
   protected SendableChooser<Alliance> allianceColor = new SendableChooser<>();
 
   private final Field2d field;
@@ -33,7 +33,7 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
 
-    autoChooser = AutoBuilder.buildAutoChooser("None");
+ //   autoChooser = AutoBuilder.buildAutoChooser("None");
 
         // Configure default commands
     this.drivetrain.setDefaultCommand(
@@ -57,6 +57,8 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+        return Commands.print("No autonomous command configured");
+
+//    return autoChooser.getSelected();
   }
 }
