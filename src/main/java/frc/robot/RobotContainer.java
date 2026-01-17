@@ -17,6 +17,7 @@ import frc.robot.commands.drivetrain.SwerveDriveTeleop;
 import frc.robot.io.IO;
 import frc.robot.subsystems.Drive.DriveSubsystem;
 import frc.robot.subsystems.Limelight.LimelightSubsystem;
+import frc.robot.subsystems.QuestNav.QuestNavSubsystem;
 
 public class RobotContainer {
 
@@ -24,6 +25,7 @@ public class RobotContainer {
 
   public final DriveSubsystem drivetrain = new DriveSubsystem();
   public final LimelightSubsystem limelight = new LimelightSubsystem();
+  public final QuestNavSubsystem questnav = new QuestNavSubsystem(drivetrain);
 
   private final SendableChooser<Command> autoChooser;
   protected SendableChooser<Alliance> allianceColor = new SendableChooser<>();
