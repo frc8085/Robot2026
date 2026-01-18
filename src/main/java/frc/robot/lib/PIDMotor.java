@@ -9,8 +9,6 @@ public interface PIDMotor extends Motor {
 
     double getPosition();
 
-    double getPositionAbsolute();
-
     double getVelocity();
 
     void setEncoderPosition(double reference);
