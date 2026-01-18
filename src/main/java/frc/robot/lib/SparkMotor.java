@@ -18,7 +18,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 
 import com.revrobotics.spark.SparkMax;
 
-public class SparkMotor implements PIDMotor {
+public class SparkMotor implements PIDMotor, AbsoluteEncoder {
 
     private final SparkMax mMotor;
     private final SparkClosedLoopController mMotorClosed;
@@ -54,13 +54,18 @@ public class SparkMotor implements PIDMotor {
     }
 
     @Override
+    public void setPositionAbsolute(double reference) {
+        this.mMotorAEncoder.setPosition(reference);
+    }
+
+    @Override
     public double getVelocity() {
         return this.mMotorREncoder.getVelocity();
     }
 
     @Override
     public void setEncoderPosition(double reference) {
-        
+        this.mMotorREncoder.setPosition(reference);
     }
 
     @Override
