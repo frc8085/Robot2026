@@ -1,5 +1,5 @@
 package frc.robot.subsystems.Indexer;
 
 public class IndexerConstants {
-    public static final int kIndexerMotorCanId = 22;
+    public static final int kIndexerMotorCanId = 23;
 }

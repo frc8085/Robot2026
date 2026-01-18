@@ -1,13 +1,13 @@
 package frc.robot.subsystems.Indexer;
 
 import frc.robot.lib.PIDMotor;
-import frc.robot.lib.SparkMotor;
+import frc.robot.lib.TalonFXMotor;
 
 public class IndexerSubsystem{
     private PIDMotor indexerMotor;
 
     public IndexerSubsystem(){
-        this.indexerMotor = new SparkMotor(IndexerConstants.kIndexerMotorCanId);
+        this.indexerMotor = new TalonFXMotor(IndexerConstants.kIndexerMotorCanId);
     }
 
     public void setSpeed(double speed){
