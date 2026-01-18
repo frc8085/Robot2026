@@ -1,6 +1,6 @@
 package frc.robot.lib;
 
-public interface AbsoluteEncoder {
+public interface AbsolutePosition {
     double getPositionAbsolute();
 
     void setPositionAbsolute(double reference);
