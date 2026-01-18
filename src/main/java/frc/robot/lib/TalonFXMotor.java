@@ -54,11 +54,6 @@ public class TalonFXMotor implements PIDMotor {
     }
 
     @Override
-    public double getPositionAbsolute() {
-        return 0;
-    }
-
-    @Override
     public double getVelocity() {
         this.motorVelocity.refresh();
         return this.motorVelocity.getValueAsDouble();
