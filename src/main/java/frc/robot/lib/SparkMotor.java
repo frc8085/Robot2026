@@ -55,7 +55,7 @@ public class SparkMotor implements PIDMotor, AbsolutePosition {
 
     @Override
     public void setPositionAbsolute(double reference) {
-        this.mMotorAEncoder.setPosition(reference);
+        return;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class SparkMotor implements PIDMotor, AbsolutePosition {
 
     @Override
     public void setEncoderPosition(double reference) {
-        return;
+        this.mMotorREncoder.setPosition(reference);
     }
 
     @Override
