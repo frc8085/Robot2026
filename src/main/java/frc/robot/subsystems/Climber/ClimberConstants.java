@@ -3,11 +3,10 @@ package frc.robot.subsystems.Climber;
 public class ClimberConstants {
     
 
-    public static final int L1CLIMBMOTORID = 21;
+    public static final int CanL1Climb = 21;
 
-    public static final double L1CLIMBMINROT = 0;
-
-    public static final double L1CLIMBMAXROT = 10;
+    public static final double kL1ClimbMinRot = 0;
+    public static final double kL1ClimbMaxRot = 10;
 
 
     public class L1ClimberPID {
@@ -24,7 +23,7 @@ public class ClimberConstants {
         public static final double kV = 0.12;
         public static final double kA = 0.01;
         public static final double kS = 0.20;
-        public static final double MAXSPEED = 80;
+        public static final double kMaxSpeed = 80;
     }
 
 }

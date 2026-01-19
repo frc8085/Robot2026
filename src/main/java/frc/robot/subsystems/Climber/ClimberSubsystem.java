@@ -17,7 +17,6 @@ public class ClimberSubsystem extends SubsystemBase {
 
         var slot0Configs = new Slot0Configs();
  
-
         TalonFXConfiguration config = new TalonFXConfiguration();
 
         // config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
@@ -25,11 +24,11 @@ public class ClimberSubsystem extends SubsystemBase {
         config.CurrentLimits.StatorCurrentLimit = 50;
         config.CurrentLimits.SupplyCurrentLimit = 50;
 
-        config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.Slot0Configs.MAXSPEED;
+        config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.Slot0Configs.kMaxSpeed;
         config.MotionMagic.MotionMagicAcceleration = 200;
         config.MotionMagic.MotionMagicJerk = 6000;
 
-        var talon = new TalonFXMotor(ClimberConstants.L1CLIMBMOTORID);
+        var talon = new TalonFXMotor(ClimberConstants.CanL1Climb);
 
             talon.applyConfigs(config);
 
@@ -41,10 +40,10 @@ public class ClimberSubsystem extends SubsystemBase {
 
 
     public void setClimbPosition(double reference) {
-        if (reference > ClimberConstants.L1CLIMBMAXROT) {
-            reference = ClimberConstants.L1CLIMBMAXROT;
-        } else if (reference < ClimberConstants.L1CLIMBMINROT) {
-            reference = ClimberConstants.L1CLIMBMINROT;
+        if (reference > ClimberConstants.kL1ClimbMaxRot) {
+            reference = ClimberConstants.kL1ClimbMaxRot;
+        } else if (reference < ClimberConstants.kL1ClimbMinRot) {
+            reference = ClimberConstants.kL1ClimbMinRot;
         }
         this.l1Climber.setMotorPosition(reference);
     }
