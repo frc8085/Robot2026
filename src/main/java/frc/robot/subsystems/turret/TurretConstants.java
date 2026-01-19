@@ -24,4 +24,8 @@ public class TurretConstants {
         public static final double kS = 0.20;
         public static final double kMaxSpeed = 80;
     }
+    public static final double hoodMax = 0;
+    public static final double hoodMin = 0;
+    public static final double turretMaxDeg = 270;
+    public static final double turretMinDeg = -270;
 }

@@ -5,16 +5,18 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.lib.Motor;
 import frc.robot.lib.PIDMotor;
 import frc.robot.lib.TalonFXMotor;
+import frc.robot.subsystems.Drive.DriveSubsystem;
 import frc.robot.subsystems.turret.TurretConstants.turretSlot0Configs;
 
 public class TurretSubsystem {
     private PIDMotor turretMotor;
     private PIDMotor hoodMotor;
     private DigitalInput hoodLimitSwitch;
-
+    private DriveSubsystem mDriveSubsystem = new DriveSubsystem();
     public TurretSubsystem(){
         hoodMotor = new TalonFXMotor(TurretConstants.hoodMotorCan);
         hoodLimitSwitch = new DigitalInput(TurretConstants.hoodLimitSwitchID);
@@ -64,5 +66,29 @@ public class TurretSubsystem {
             hoodTalon.applySlotConfigs(hoodSlot0Configs);
         
         this.hoodMotor = hoodTalon;
+    }
+
+    public boolean hoodLimitSwitchHit(){
+        return hoodLimitSwitch.get();
+    }
+
+    public void setHoodPosition(double pos){
+        pos = Math.min(Math.max(pos, TurretConstants.hoodMin), TurretConstants.hoodMax);
+        hoodMotor.setMotorPosition(pos);
+    }
+
+    public void zeroHood(){
+        //slow while zeroing
+        hoodMotor.setMotorVelocity(-.15);;
+    }
+    public void setTurretPosition(double refrence){
+        if (refrence > TurretConstants.turretMaxDeg){
+            int offset = (int) ((refrence-TurretConstants.turretMaxDeg)/360) + 1;
+            refrence -= offset*360;
+        } else if (refrence < TurretConstants.turretMinDeg){
+            int offset = (int) (Math.abs(refrence+TurretConstants.turretMinDeg)/360) + 1;
+            refrence += offset*360;
+        }
+        turretMotor.setMotorPosition(refrence);
     }
 }
