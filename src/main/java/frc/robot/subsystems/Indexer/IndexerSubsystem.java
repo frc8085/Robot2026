@@ -7,7 +7,7 @@ public class IndexerSubsystem{
     private PIDMotor indexerMotor;
 
     public IndexerSubsystem(){
-        this.indexerMotor = new TalonFXMotor(IndexerConstants.kIndexerMotorCanId);
+        this.indexerMotor = new TalonFXMotor(IndexerConstants.CanIndexer);
     }
 
     public void setSpeed(double speed){
