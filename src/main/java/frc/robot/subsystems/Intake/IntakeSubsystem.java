@@ -13,17 +13,15 @@ public class IntakeSubsystem extends SubsystemBase{
     TalonFXMotor intake;
     TalonFXMotor deploy;
 
-    boolean isDeployed;
-
     public IntakeSubsystem()
     {
         var slot0Configs = new Slot0Configs();
-        slot0Configs.kP = 0.11;
-        slot0Configs.kI = 0;
-        slot0Configs.kD = 0;
-        slot0Configs.kV = 0.12;
-        slot0Configs.kA = 0.01;
-        slot0Configs.kS = 0.20;
+        slot0Configs.kP = IntakeConstants.kP;
+        slot0Configs.kI = IntakeConstants.kI;
+        slot0Configs.kD = IntakeConstants.kD;
+        slot0Configs.kV = IntakeConstants.kV;
+        slot0Configs.kA = IntakeConstants.kA;
+        slot0Configs.kS = IntakeConstants.kS;
 
         TalonFXConfiguration config = new TalonFXConfiguration();
 
@@ -45,28 +43,36 @@ public class IntakeSubsystem extends SubsystemBase{
         
     }
 
-    public void runIntake(double speed)
+    public void runIntake()
     {
-        if (isDeployed == true) {
-            intake.setMotorVelocity(speed);
+        if (deploy.getPosition() >= IntakeConstants.intakeMinimumRunPosition) {
+             intake.setMotorVelocity(IntakeConstants.motorSpeed);
         }
+    }
+
+    public void stopIntake()
+    {
+        intake.setMotorVelocity(0);
     }
     
     public void deployIntake()
     {
-        deploy.setMotorPosition(0);
-        isDeployed = true;
+        deploy.setMotorPosition(IntakeConstants.intakeDeployedPosition);
     }
 
     public void retractIntake()
     {
-        deploy.setMotorPosition(0);
-        isDeployed = false;
+        deploy.setMotorPosition(IntakeConstants.intakeRetractedPosition);
     }
 
     public boolean isIntakeDeployed()
     {
-        return isDeployed;
+        return deploy.getPosition() >= IntakeConstants.intakeDeployedPosition;
+    }
+
+    public boolean isMinimumRunPosition()
+    {
+        return deploy.getPosition() >= IntakeConstants.intakeMinimumRunPosition;
     }
 
 }
