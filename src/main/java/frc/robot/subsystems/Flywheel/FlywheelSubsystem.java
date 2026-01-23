@@ -21,7 +21,7 @@ public class FlywheelSubsystem extends SubsystemBase {
         TalonFXConfiguration config = new TalonFXConfiguration();
 
         // config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-        config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        config.MotorOutput.NeutralMode = NeutralModeValue.Coast; // Flywheels usually coast when not powered
         config.CurrentLimits.StatorCurrentLimit = 50;
         config.CurrentLimits.SupplyCurrentLimit = 50;
 
