@@ -9,8 +9,8 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class ClimberSubsystem extends SubsystemBase {
     
-    private PIDMotor l1Climber;
-
+    private PIDMotor DeployClimbMotor;
+    private PIDMotor MainClimbMotor;
 
     public ClimberSubsystem() {
         // CanID
@@ -28,14 +28,15 @@ public class ClimberSubsystem extends SubsystemBase {
         config.MotionMagic.MotionMagicAcceleration = 200;
         config.MotionMagic.MotionMagicJerk = 6000;
 
+
         var talon = new TalonFXMotor(ClimberConstants.CanL1Climb);
-
+        var talon2 = new TalonFXMotor(ClimberConstants.CanL2Climb);
             talon.applyConfigs(config);
-
+            talon2.applyConfigs(config);
             talon.applySlotConfigs(slot0Configs);
-        
-        this.l1Climber = talon;
-
+            talon2.applySlotConfigs(slot0Configs);
+        this.DeployClimbMotor = talon;
+        this.MainClimbMotor = talon2;
     }
 
 
@@ -45,7 +46,13 @@ public class ClimberSubsystem extends SubsystemBase {
         } else if (reference < ClimberConstants.kL1ClimbMinRot) {
             reference = ClimberConstants.kL1ClimbMinRot;
         }
-        this.l1Climber.setMotorPosition(reference);
+        this.DeployClimbMotor.setMotorPosition(reference);
+    }
+    public void setClimbMotorVelocity(double reference) 
+        {
+            this.MainClimbMotor.setMotorVelocity(reference);
+
+        }
+        //for tomorrow create getter for climb motor velocity and check motor velocity in lower climber command (is finished)
     }
 
-}

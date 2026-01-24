@@ -4,10 +4,12 @@ public class ClimberConstants {
     
 
     public static final int CanL1Climb = 21;
-
+public static final int CanL2Climb = 22;
     public static final double kL1ClimbMinRot = 0;
     public static final double kL1ClimbMaxRot = 10;
-
+    public static final double MaxClimbMotorVelocity = 45;
+    public static final double MinClimbMotorPosition = 42; 
+    public static final double MaxClimbMotorPosition = 85;
 
     public class L1ClimberPID {
         public static final double P = 1;
