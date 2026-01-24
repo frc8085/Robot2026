@@ -3,13 +3,17 @@ package frc.robot.subsystems.Climber;
 public class ClimberConstants {
     
 
-    public static final int CanL1Climb = 21;
-public static final int CanL2Climb = 22;
-    public static final double kL1ClimbMinRot = 0;
+    public static final int kCanL1Climb = 21; //deploy motor
+    public static final int kCanL2Climb = 22; //main up/down motor
+    //These are for deploy motor
+    public static final double kL1ClimbMinRot = 0; 
     public static final double kL1ClimbMaxRot = 10;
-    public static final double MaxClimbMotorVelocity = 45;
-    public static final double MinClimbMotorPosition = 42; 
-    public static final double MaxClimbMotorPosition = 85;
+    public static final double kL1ClimbMinRaiseRot = 0;
+    //These are for main climb motor
+    public static final double kMaxClimbMotorVelocity = 0; //basically just climb motor speed
+    public static final double kMinClimbMotorPosition = 0; 
+    public static final double kMaxClimbMotorPosition = 0;
+    public static final double kClimbMotorClimbPosition = 0; //bad name. This is the climb position, meaning it pulls the robot up as it goes to this position.
 
     public class L1ClimberPID {
         public static final double P = 1;

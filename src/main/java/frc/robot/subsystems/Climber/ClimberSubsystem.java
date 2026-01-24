@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class ClimberSubsystem extends SubsystemBase {
-    
+
     private PIDMotor DeployClimbMotor;
     private PIDMotor MainClimbMotor;
 
@@ -16,7 +16,7 @@ public class ClimberSubsystem extends SubsystemBase {
         // CanID
 
         var slot0Configs = new Slot0Configs();
- 
+
         TalonFXConfiguration config = new TalonFXConfiguration();
 
         // config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
@@ -28,19 +28,17 @@ public class ClimberSubsystem extends SubsystemBase {
         config.MotionMagic.MotionMagicAcceleration = 200;
         config.MotionMagic.MotionMagicJerk = 6000;
 
-
-        var talon = new TalonFXMotor(ClimberConstants.CanL1Climb);
-        var talon2 = new TalonFXMotor(ClimberConstants.CanL2Climb);
-            talon.applyConfigs(config);
-            talon2.applyConfigs(config);
-            talon.applySlotConfigs(slot0Configs);
-            talon2.applySlotConfigs(slot0Configs);
+        var talon = new TalonFXMotor(ClimberConstants.kCanL1Climb);
+        var talon2 = new TalonFXMotor(ClimberConstants.kCanL2Climb);
+        talon.applyConfigs(config);
+        talon2.applyConfigs(config);
+        talon.applySlotConfigs(slot0Configs);
+        talon2.applySlotConfigs(slot0Configs);
         this.DeployClimbMotor = talon;
         this.MainClimbMotor = talon2;
     }
 
-
-    public void setClimbPosition(double reference) {
+    public void setDeployPosition(double reference) {
         if (reference > ClimberConstants.kL1ClimbMaxRot) {
             reference = ClimberConstants.kL1ClimbMaxRot;
         } else if (reference < ClimberConstants.kL1ClimbMinRot) {
@@ -48,11 +46,20 @@ public class ClimberSubsystem extends SubsystemBase {
         }
         this.DeployClimbMotor.setMotorPosition(reference);
     }
-    public void setClimbMotorVelocity(double reference) 
-        {
-            this.MainClimbMotor.setMotorVelocity(reference);
 
-        }
-        //for tomorrow create getter for climb motor velocity and check motor velocity in lower climber command (is finished)
+    public double getDeployPosition() {
+        return this.DeployClimbMotor.getPosition();
     }
 
+    public void setClimbMotorVelocity(double velocity) {
+        this.MainClimbMotor.setMotorVelocity(velocity);
+    }
+
+    public void stopClimbMotor() {
+        this.MainClimbMotor.setMotorVelocity(0);
+    }
+
+    public double getClimbMotorPosition() {
+        return this.MainClimbMotor.getPosition();
+    }
+}
