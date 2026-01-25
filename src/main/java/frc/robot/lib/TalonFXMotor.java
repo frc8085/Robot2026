@@ -80,7 +80,7 @@ public class TalonFXMotor implements PIDMotor {
         return this.TalonFX.getDeviceID();
     }
 
-    public void follow(TalonFXMotor leader, TalonFXMotor follower, boolean inverted) {
+    public void follow(TalonFXMotor leader, boolean inverted) {
         var aligned = MotorAlignmentValue.Aligned;
         if (inverted) {
             aligned = MotorAlignmentValue.Opposed;

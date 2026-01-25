@@ -39,10 +39,10 @@ public class FlywheelSubsystem extends SubsystemBase {
         flywheelFollow.applyConfigs(config);
         flywheelFollow.applySlotConfigs(slot0Configs);
 
-        flywheelFollow.follow(flywheelMain, flywheelFollow, true);
+        flywheelFollow.follow(flywheelMain, true);
     }
     
-    public void setFlywheelRPS(double rps) {    
+    private void setFlywheelRPS(double rps) {    
         flywheelMain.setMotorVelocity(rps);
     }
 
