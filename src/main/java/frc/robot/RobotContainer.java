@@ -18,12 +18,14 @@ import frc.robot.io.IO;
 import frc.robot.subsystems.Drive.DriveSubsystem;
 import frc.robot.subsystems.Limelight.LimelightSubsystem;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
+import frc.robot.subsystems.Flywheel.FlywheelSubsystem;
 
 public class RobotContainer {
 
     // The robot's subsystems
 
   public final DriveSubsystem drivetrain = new DriveSubsystem();
+  private final FlywheelSubsystem flywheel = new FlywheelSubsystem();
   public final LimelightSubsystem limelight = new LimelightSubsystem();
   // public final IntakeSubsystem intake = new IntakeSubsystem();
 
