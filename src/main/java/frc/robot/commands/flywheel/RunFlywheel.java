@@ -5,21 +5,21 @@ import frc.robot.subsystems.Flywheel.FlywheelSubsystem;
 
 public class RunFlywheel extends Command {
     private final FlywheelSubsystem flywheelSubsystem;
-    private final double targetRPM;
+    private final double targetMPS;
 
-    public RunFlywheel(FlywheelSubsystem flywheelSubsystem, double targetRPM) {
+    public RunFlywheel(FlywheelSubsystem flywheelSubsystem, double targetMPS) {
         this.flywheelSubsystem = flywheelSubsystem;
-        this.targetRPM = targetRPM;
+        this.targetMPS = targetMPS;
         addRequirements(flywheelSubsystem);
     }
 
     @Override
     public void initialize() {
-        flywheelSubsystem.setFlywheelRPM(targetRPM);
+        flywheelSubsystem.setFlywheelMetersPerSecond(targetMPS);
     }
 
     @Override
     public boolean isFinished() {
-        return flywheelSubsystem.isAtTargetRPM(targetRPM);
+        return flywheelSubsystem.isAtTargetMPS(targetMPS);
     }
 }
