@@ -7,6 +7,8 @@ import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
+import com.ctre.phoenix6.controls.Follower;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
@@ -72,5 +74,17 @@ public class TalonFXMotor implements PIDMotor {
     @Override
     public double getSpeed() {
         return this.TalonFX.get();
+    }
+
+    public int getID() {
+        return this.TalonFX.getDeviceID();
+    }
+
+    public void follow(TalonFXMotor leader, TalonFXMotor follower, boolean inverted) {
+        var aligned = MotorAlignmentValue.Aligned;
+        if (inverted) {
+            aligned = MotorAlignmentValue.Opposed;
+        }
+        this.TalonFX.setControl(new Follower(leader.getID(), aligned));
     }
 }
