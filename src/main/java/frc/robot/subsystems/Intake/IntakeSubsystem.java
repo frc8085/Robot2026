@@ -27,10 +27,10 @@ public class IntakeSubsystem extends SubsystemBase{
 
         // config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        config.CurrentLimits.StatorCurrentLimit = IntakeConstant.StatorCurrentLimit;
-        config.CurrentLimits.SupplyCurrentLimit = IntakeConstant.SupplyCurrentLimit;
+        config.CurrentLimits.StatorCurrentLimit = IntakeConstants.StatorCurrentLimit;
+        config.CurrentLimits.SupplyCurrentLimit = IntakeConstants.SupplyCurrentLimit;
 
-        config.MotionMagic.MotionMagicAcceleration = IntakeConstant.MMAcceleration;
+        config.MotionMagic.MotionMagicAcceleration = IntakeConstants.MMAcceleration;
         config.MotionMagic.MotionMagicJerk = IntakeConstants.MMJerk;
         
         this.intake = new TalonFXMotor(IntakeConstants.intakeMotorCanID);
