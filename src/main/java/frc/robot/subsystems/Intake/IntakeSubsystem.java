@@ -27,11 +27,11 @@ public class IntakeSubsystem extends SubsystemBase{
 
         // config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        config.CurrentLimits.StatorCurrentLimit = 50;
-        config.CurrentLimits.SupplyCurrentLimit = 50;
+        config.CurrentLimits.StatorCurrentLimit = IntakeConstant.StatorCurrentLimit;
+        config.CurrentLimits.SupplyCurrentLimit = IntakeConstant.SupplyCurrentLimit;
 
-        config.MotionMagic.MotionMagicAcceleration = 400;
-        config.MotionMagic.MotionMagicJerk = 6000;
+        config.MotionMagic.MotionMagicAcceleration = IntakeConstant.MMAcceleration;
+        config.MotionMagic.MotionMagicJerk = IntakeConstants.MMJerk;
         
         this.intake = new TalonFXMotor(IntakeConstants.intakeMotorCanID);
         this.deploy = new TalonFXMotor(IntakeConstants.deployMotorCanID);
@@ -45,9 +45,7 @@ public class IntakeSubsystem extends SubsystemBase{
 
     public void runIntake()
     {
-        if (deploy.getPosition() >= IntakeConstants.intakeMinimumRunPosition) {
-             intake.setMotorVelocity(IntakeConstants.motorSpeed);
-        }
+        intake.setMotorVelocity(IntakeConstants.motorSpeed);
     }
 
     public void stopIntake()

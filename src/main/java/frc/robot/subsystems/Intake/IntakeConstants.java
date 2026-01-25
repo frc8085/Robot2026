@@ -17,4 +17,9 @@ public final class IntakeConstants {
     public static final double kV = 0;
     public static final double kA = 0;
     public static final double kS = 0;
+
+    public static final double MMJerk = 6000;
+    public static final double MMAcceleration = 400;
+    public static final double StatorCurrentLimit = 50;
+    public static final double SupplyCurrentLimit = 50;
 }
