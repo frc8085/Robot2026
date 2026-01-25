@@ -4,6 +4,8 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.lib.Motor;
@@ -81,14 +83,45 @@ public class TurretSubsystem {
         //slow while zeroing
         hoodMotor.setMotorVelocity(-.15);;
     }
-    public void setTurretPosition(double refrence){
-        if (refrence > TurretConstants.turretMaxDeg){
-            int offset = (int) ((refrence-TurretConstants.turretMaxDeg)/360) + 1;
-            refrence -= offset*360;
-        } else if (refrence < TurretConstants.turretMinDeg){
-            int offset = (int) (Math.abs(refrence+TurretConstants.turretMinDeg)/360) + 1;
-            refrence += offset*360;
+
+    /**
+     * commands the turret to turn to a robot relative angle
+     * 
+     * @param angle turret angle in degrees
+     */
+    public void setTurretAngle(double angle){
+        if (angle > TurretConstants.turretMaxDeg){
+            int offset = (int) ((angle-TurretConstants.turretMaxDeg)/360) + 1;
+            angle -= offset*360;
+        } else if (angle < TurretConstants.turretMinDeg){
+            int offset = (int) (Math.abs(angle+TurretConstants.turretMinDeg)/360) + 1;
+            angle += offset*360;
         }
-        turretMotor.setMotorPosition(refrence);
+        turretMotor.setMotorPosition(angle);
+    }
+
+    /**
+     * commands the turret to turn to an absolute field angle
+     * 
+     * @param angle is the field relative angle in degrees
+     * 
+     */
+    public void setTurretAbsAngle(double angle) {
+        //converts angle in degrees to rotation2D object for convenience
+        Rotation2d targetRotation = Rotation2d.fromDegrees(angle);
+        Rotation2d robotFieldRelativeRotation = mDriveSubsystem.getRotation();
+        Rotation2d difference = robotFieldRelativeRotation.minus(targetRotation);
+        setTurretAngle(difference.getDegrees());
+    }
+
+    /**
+     * turn the turret to face the direction on the field corresponding to x and y
+     */
+    public void turnTurretToFieldCoord(double x, double y) {
+        Translation2d robotCoord = mDriveSubsystem.getTranslation();
+        Translation2d target = new Translation2d(x, y);
+        Translation2d difference = target.minus(robotCoord);
+        Rotation2d angleToTarget = difference.getAngle();
+        setTurretAbsAngle(angleToTarget.getDegrees());
     }
 }
