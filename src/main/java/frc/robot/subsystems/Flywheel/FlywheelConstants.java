@@ -15,8 +15,8 @@ public final class FlywheelConstants {
     public static final double kA = 0.0001; // Acceleration feedforward gain
     public static final double kS = 0.05; // Static feedforward gain
 
-    public static final double kStatorCurrentLimit = 0;
-    public static final double kSupplyCurrentLimit = 0;
+    public static final double kStatorCurrentLimit = 10;
+    public static final double kSupplyCurrentLimit = 10;
     public static final double kMotionMagicAcceleration = 0;
     public static final double kMotionMagicJerk = 0;
 

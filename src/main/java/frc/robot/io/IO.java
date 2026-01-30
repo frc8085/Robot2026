@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.drivetrain.*;
+import frc.robot.commands.flywheel.*;
+import frc.robot.subsystems.Flywheel.FlywheelSubsystem;
 
 public class IO {
 
@@ -74,6 +76,9 @@ public class IO {
                 // Reset heading of robot for field relative drive
                 zeroHeadingButton.onTrue(new InstantCommand(() -> robotContainer.drivetrain.zeroHeading(),
                                 robotContainer.drivetrain));
+
+                scoreCoral.whileTrue(new InstantCommand(() -> robotContainer.flywheel.go(),
+                                robotContainer.flywheel));
 
                 // // Limelight Buttons
 

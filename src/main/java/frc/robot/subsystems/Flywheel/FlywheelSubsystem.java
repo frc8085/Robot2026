@@ -69,6 +69,7 @@ public class FlywheelSubsystem extends SubsystemBase {
 
     public void setFlywheelMetersPerSecond(double mps) {
         // is convert meters per second to rotations per minute
+        System.out.println("shooter1");
         double rps = this.MPStoRPS(mps);
         this.setFlywheelRPS(rps);
     }
@@ -83,6 +84,11 @@ public class FlywheelSubsystem extends SubsystemBase {
         // convert the RPM -> to MPS
         double currentMPS = this.RPStoMPS(currentRPS);
         return Math.abs(currentMPS - targetMPS) <= FlywheelConstants.kFlywheelToleranceMPS;
+    }
+
+    public void go() {
+        flywheelMain.setSpeed(.75);
+        System.out.println("speed2");
     }
 
     @Override
