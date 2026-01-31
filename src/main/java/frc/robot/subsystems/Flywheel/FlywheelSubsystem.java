@@ -26,6 +26,8 @@ public class FlywheelSubsystem extends SubsystemBase {
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast; // Flywheels usually coast when not powered
         config.CurrentLimits.StatorCurrentLimit = FlywheelConstants.kStatorCurrentLimit;
         config.CurrentLimits.SupplyCurrentLimit = FlywheelConstants.kSupplyCurrentLimit;
+        config.CurrentLimits.SupplyCurrentLowerLimit = FlywheelConstants.kSupplyCurrentLowerLimit;
+        config.CurrentLimits.SupplyCurrentLowerTime = FlywheelConstants.kSupplyCurrentLowerTime;
 
         config.MotionMagic.MotionMagicAcceleration = FlywheelConstants.kMotionMagicAcceleration;
         config.MotionMagic.MotionMagicJerk = FlywheelConstants.kMotionMagicJerk;
@@ -87,7 +89,7 @@ public class FlywheelSubsystem extends SubsystemBase {
     }
 
     public void go() {
-        flywheelMain.setSpeed(.75);
+        flywheelMain.setSpeed(.1);
         System.out.println("speed2");
     }
 
