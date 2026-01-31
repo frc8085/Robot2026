@@ -3,9 +3,19 @@ package frc.robot.subsystems.turret;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.FeedbackSensor;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import frc.robot.Configs;
 import frc.robot.lib.Motor;
 import frc.robot.lib.PIDMotor;
 import frc.robot.lib.TalonFXMotor;
@@ -14,10 +24,18 @@ import frc.robot.subsystems.turret.TurretConstants.turretSlot0Configs;
 
 public class TurretSubsystem {
     private PIDMotor turretMotor;
-    private PIDMotor hoodMotor;
+//temporarily setting up hood with Neo550
+    //   private PIDMotor hoodMotor;
+ private final SparkMax hoodMotor = new SparkMax(TurretConstants.hoodMotorCan, MotorType.kBrushless);
+  SparkMaxConfig config = new SparkMaxConfig();
+  private RelativeEncoder hoodEncoder;
+  private SparkClosedLoopController hoodPIDController;
+
     private DigitalInput hoodLimitSwitch;
     public TurretSubsystem(){
-        hoodMotor = new TalonFXMotor(TurretConstants.hoodMotorCan);
+//temporarily setup hood with Neo550
+//        hoodMotor = new TalonFXMotor(TurretConstants.hoodMotorCan);
+
         hoodLimitSwitch = new DigitalInput(TurretConstants.hoodLimitSwitchID);
         //configs turret motor
         var turretSlot0Configs = new Slot0Configs();
@@ -41,45 +59,56 @@ public class TurretSubsystem {
 
             turretTalon.applySlotConfigs(turretSlot0Configs);
         
-        this.turretMotor = turretTalon;
+            this.turretMotor = turretTalon;
 
-        //configs hood motor
-        var hoodSlot0Configs = new Slot0Configs();
-        hoodSlot0Configs.kP = TurretConstants.hoodSlot0Configs.kP;
-        hoodSlot0Configs.kI = TurretConstants.hoodSlot0Configs.kI;
-        hoodSlot0Configs.kD = TurretConstants.hoodSlot0Configs.kD;
-        hoodSlot0Configs.kV = TurretConstants.hoodSlot0Configs.kV;
-        hoodSlot0Configs.kA = TurretConstants.hoodSlot0Configs.kA;
-        hoodSlot0Configs.kS = TurretConstants.hoodSlot0Configs.kS;
-        TalonFXConfiguration hoodConfig = new TalonFXConfiguration();
-        hoodConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        hoodConfig.CurrentLimits.StatorCurrentLimit = 50;
-        hoodConfig.CurrentLimits.SupplyCurrentLimit = 50;
-        hoodConfig.MotionMagic.MotionMagicCruiseVelocity = TurretConstants.turretSlot0Configs.kMaxSpeed;
-        hoodConfig.MotionMagic.MotionMagicAcceleration = 200;
-        hoodConfig.MotionMagic.MotionMagicJerk = 6000;
-        var hoodTalon = new TalonFXMotor(TurretConstants.hoodMotorCan);
+            /** temporarily setting up with a 550 */
+        // // configs hood motor
+        // var hoodSlot0Configs = new Slot0Configs();
+        // hoodSlot0Configs.kP = TurretConstants.hoodSlot0Configs.kP;
+        // hoodSlot0Configs.kI = TurretConstants.hoodSlot0Configs.kI;
+        // hoodSlot0Configs.kD = TurretConstants.hoodSlot0Configs.kD;
+        // hoodSlot0Configs.kV = TurretConstants.hoodSlot0Configs.kV;
+        // hoodSlot0Configs.kA = TurretConstants.hoodSlot0Configs.kA;
+        // hoodSlot0Configs.kS = TurretConstants.hoodSlot0Configs.kS;
+        // TalonFXConfiguration hoodConfig = new TalonFXConfiguration();
+        // hoodConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        // hoodConfig.CurrentLimits.StatorCurrentLimit = 50;
+        // hoodConfig.CurrentLimits.SupplyCurrentLimit = 50;
+        // hoodConfig.MotionMagic.MotionMagicCruiseVelocity = TurretConstants.turretSlot0Configs.kMaxSpeed;
+        // hoodConfig.MotionMagic.MotionMagicAcceleration = 200;
+        // hoodConfig.MotionMagic.MotionMagicJerk = 6000;
+        // var hoodTalon = new TalonFXMotor(TurretConstants.hoodMotorCan);
         
-            hoodTalon.applyConfigs(hoodConfig);
+        //     hoodTalon.applyConfigs(hoodConfig);
 
-            hoodTalon.applySlotConfigs(hoodSlot0Configs);
+        //     hoodTalon.applySlotConfigs(hoodSlot0Configs);
         
-        this.hoodMotor = hoodTalon;
+        // this.hoodMotor = hoodTalon;
+
+        hoodEncoder = hoodMotor.getEncoder();
+        hoodPIDController = hoodMotor.getClosedLoopController();
+        hoodMotor.configure(TurretConstants.Turret.hoodConfig, com.revrobotics.ResetMode.kResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
+
+
     }
 
     public boolean hoodLimitSwitchHit(){
         return hoodLimitSwitch.get();
     }
 
+    // talon stuff
     public void setHoodPosition(double pos){
         pos = Math.min(Math.max(pos, TurretConstants.hoodMin), TurretConstants.hoodMax);
-        hoodMotor.setMotorPosition(pos);
+        // hoodMotor.setMotorPosition(pos);
+hoodMotor.set(.5);
     }
 
     public void zeroHood(){
         //slow while zeroing
-        hoodMotor.setMotorVelocity(-.15);;
+        // hoodMotor.setMotorVelocity(-.15);;
+        hoodMotor.set(0);
     }
+    
     public void setTurretPosition(double refrence){
         if (refrence > TurretConstants.turretMaxDeg){
             int offset = (int) ((refrence-TurretConstants.turretMaxDeg)/360) + 1;

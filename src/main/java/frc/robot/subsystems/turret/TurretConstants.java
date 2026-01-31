@@ -1,6 +1,9 @@
 package frc.robot.subsystems.turret;
 
 import com.ctre.phoenix6.configs.SlotConfigs;
+import com.revrobotics.spark.FeedbackSensor;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class TurretConstants {
     public static final int turretMotorCan = 0;
@@ -28,4 +31,25 @@ public class TurretConstants {
     public static final double hoodMin = 0;
     public static final double turretMaxDeg = 270;
     public static final double turretMinDeg = -270;
-}
+
+
+    public static final class Turret {
+                public static final SparkMaxConfig hoodConfig = new SparkMaxConfig();
+
+                static {
+                        hoodConfig.idleMode(IdleMode.kBrake)
+                                        .smartCurrentLimit(20);
+
+                        hoodConfig.encoder
+                                        .positionConversionFactor(1000)
+                                        .velocityConversionFactor(1000);
+
+                        hoodConfig.closedLoop
+                                        .outputRange(-0.25, .25)
+                                        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                                        .pidf(2,0,0,0);
+                }
+        }
+
+
+    }
