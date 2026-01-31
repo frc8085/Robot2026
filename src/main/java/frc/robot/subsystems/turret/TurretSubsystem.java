@@ -16,7 +16,6 @@ public class TurretSubsystem {
     private PIDMotor turretMotor;
     private PIDMotor hoodMotor;
     private DigitalInput hoodLimitSwitch;
-    private DriveSubsystem mDriveSubsystem = new DriveSubsystem();
     public TurretSubsystem(){
         hoodMotor = new TalonFXMotor(TurretConstants.hoodMotorCan);
         hoodLimitSwitch = new DigitalInput(TurretConstants.hoodLimitSwitchID);
