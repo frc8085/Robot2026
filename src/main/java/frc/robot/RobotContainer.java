@@ -17,6 +17,7 @@ import frc.robot.io.IO;
 import frc.robot.subsystems.Drive.DriveSubsystem;
 import frc.robot.subsystems.Flywheel.FlywheelSubsystem;
 import frc.robot.subsystems.Limelight.LimelightSubsystem;
+import frc.robot.commands.flywheel.RunFlywheel;
 
 public class RobotContainer {
 
@@ -41,6 +42,11 @@ public class RobotContainer {
     this.drivetrain.setDefaultCommand(
         // IMPLEMENT DEFAULT COMMAND
         new SwerveDriveTeleop(this.drivetrain));
+    
+    //this.flywheel.setDefaultCommand(
+      //new RunFlywheel(this.flywheel, 10));
+
+    
 
     field = new Field2d();
     SmartDashboard.putData("Field", field);

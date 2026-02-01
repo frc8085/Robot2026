@@ -77,8 +77,14 @@ public class IO {
                 zeroHeadingButton.onTrue(new InstantCommand(() -> robotContainer.drivetrain.zeroHeading(),
                                 robotContainer.drivetrain));
 
-                //scoreCoral.whileTrue(new InstantCommand(() -> robotContainer.flywheel.go(),
-                                //robotContainer.flywheel));
+                scoreCoral.whileTrue(new InstantCommand(() -> robotContainer.flywheel.setFlywheelRPS(60),
+                                robotContainer.flywheel));
+
+                limelightTrigger2.whileTrue(new InstantCommand(() -> robotContainer.flywheel.go(),
+                                robotContainer.flywheel));
+
+                limelightTrigger2.whileFalse(new InstantCommand(() -> robotContainer.flywheel.stop(),
+                                robotContainer.flywheel));
 
                 // // Limelight Buttons
 

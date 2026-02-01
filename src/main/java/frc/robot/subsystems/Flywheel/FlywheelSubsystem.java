@@ -44,7 +44,7 @@ public class FlywheelSubsystem extends SubsystemBase {
         flywheelFollow.follow(flywheelMain, true);
     }
     
-    private void setFlywheelRPS(double rps) {    
+    public void setFlywheelRPS(double rps) {    
         flywheelMain.setMotorVelocity(rps);
     }
 
@@ -60,11 +60,11 @@ public class FlywheelSubsystem extends SubsystemBase {
         // M/s x 1/M = 1/s (Radians per second)
         // 1/s X 2PI/s = R/s (Rotations per second)
         double radPerSecond = mps / FlywheelConstants.kFlywheelRadius;
-        return radPerSecond * (2 * Math.PI);
+        return radPerSecond / (2 * Math.PI);
     }
 
     private double RPStoMPS(double rps) {
-        double radPerSecond = rps / (2 * Math.PI);
+        double radPerSecond = rps * (2 * Math.PI);
         return radPerSecond * FlywheelConstants.kFlywheelRadius;
         
     }
@@ -89,12 +89,20 @@ public class FlywheelSubsystem extends SubsystemBase {
     }
 
     public void go() {
-        flywheelMain.setSpeed(.1);
-        System.out.println("speed2");
+        flywheelMain.setSpeed(1);
+    }
+
+    public void stop() {
+        flywheelMain.setSpeed(0);
+    }
+
+    public double getVelocity() {
+        return this.RPStoMPS(this.flywheelMain.getVelocity());
     }
 
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+        System.out.println(this.getVelocity());
     }
 }
