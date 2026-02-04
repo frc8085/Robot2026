@@ -21,7 +21,12 @@ public class QuestNavSubsystem extends SubsystemBase {
     public QuestNavSubsystem(DriveSubsystem driveSubsystem) {
         this.driveSubsystem = driveSubsystem;
     }
-    
+
+    /**
+     * This seems evil dont use :(
+     * IF WE NEED THIS WE SHOULD FIX IT
+     * It has no need to call "getAllUnreadPoseFrames" and we should make it not do that.
+    */
     public Pose3d GetRobotPose3d() {
         PoseFrame[] poseFrames = questNav.getAllUnreadPoseFrames();
         if (poseFrames.length > 0) {
@@ -31,9 +36,9 @@ public class QuestNavSubsystem extends SubsystemBase {
         }
         return new Pose3d();
     }
-
-    public void SetRobotPose3d() {
-        Pose3d robotPose = new Pose3d(/*pretend there is pose data*/);
+    
+    public void SetRobotPose3d(Pose3d pos) {
+        Pose3d robotPose = pos;
         Pose3d questPose = robotPose.transformBy(QuestNavConstants.ROBOT_TO_QUEST);
         questNav.setPose(questPose);
     }
