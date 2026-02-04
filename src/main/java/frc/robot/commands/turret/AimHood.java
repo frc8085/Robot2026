@@ -1,12 +1,12 @@
 package frc.robot.commands.turret;
 
 import frc.robot.subsystems.turret.TurretSubsystem;
-// I relised after making this it's useless but like it's here ig maybe we could use it as a base :)
-public class AimTurret {
+
+public class AimHood {
     TurretSubsystem turretSubsystem;
     int ref;
 
-    public AimTurret(TurretSubsystem ts, int ref){
+    public AimHood(TurretSubsystem ts, int ref){
         this.turretSubsystem = ts;
         this.ref = ref;
     }
