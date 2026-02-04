@@ -10,7 +10,7 @@ public class KickerStopKicking {
         this.indexerSubsystem = indexerSubsystem;
     }
 
-    public void execute(){
+    public void initialize(){
         indexerSubsystem.setKickerSpeed(0);
     }
 

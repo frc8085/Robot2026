@@ -10,7 +10,7 @@ public class IndexerStopIndexing {
         this.indexerSubsystem = indexerSubsystem;
     }
 
-    public void execute(){
+    public void initialize(){
         indexerSubsystem.setIndexerSpeed(0);
     }
 

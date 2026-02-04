@@ -11,7 +11,7 @@ public class KickerStartKicking {
         this.indexerSubsystem = indexerSubsystem;
     }
 
-    public void execute(){
+    public void initialize(){
         indexerSubsystem.setKickerSpeed(IndexerConstants.kickerSpeed);
     }
 
