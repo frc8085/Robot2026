@@ -7,7 +7,7 @@ public final class FlywheelConstants {
     // public static final double kFlywheelTargetRPM = 4000.0; // Target RPM for shooting
     public static final double kFlywheelToleranceMPS = 0.5; // Acceptable tolerance for RPM
     public static final double kFlywheelRadius = .0508; // radius in meters (2 inches)
-
+// values tuned on wooden flywheel prototype
     public static final double kP = 0.452; // Proportional gain for velocity control
     public static final double kI = 0.0; // Integral gain for velocity control  
     public static final double kD = 0.0; // Derivative gain for velocity control
