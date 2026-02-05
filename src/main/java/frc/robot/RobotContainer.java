@@ -42,7 +42,8 @@ public class RobotContainer {
     this.drivetrain.setDefaultCommand(
         // IMPLEMENT DEFAULT COMMAND
         new SwerveDriveTeleop(this.drivetrain));
-    
+    RunFlywheel flywheelCommand = new RunFlywheel(flywheel, 50);
+    this.flywheel.setDefaultCommand(flywheelCommand);
     //this.flywheel.setDefaultCommand(
       //new RunFlywheel(this.flywheel, 10));
 
