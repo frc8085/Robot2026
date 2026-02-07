@@ -1,5 +1,6 @@
 package frc.robot.lib;
 
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -24,60 +25,60 @@ public class TalonFXMotor implements PIDMotor {
     private StatusSignal<AngularVelocity> motorVelocity;
 
     public TalonFXMotor(int id) {
-        this.TalonFX = new TalonFX(id, "rio");
-        this.motorPosition = this.TalonFX.getPosition();
-        this.motorVelocity = this.TalonFX.getVelocity();
+        TalonFX = new TalonFX(id, CANBus.roboRIO());
+        motorPosition = TalonFX.getPosition();
+        motorVelocity = TalonFX.getVelocity();
     }
 
     public void applySlotConfigs(Slot0Configs config) {
-        this.TalonFX.getConfigurator().apply(config);
+        TalonFX.getConfigurator().apply(config);
     }
 
     public void applyConfigs(TalonFXConfiguration config) {
-        this.TalonFX.getConfigurator().apply(config);
+        TalonFX.getConfigurator().apply(config);
     }
 
     @Override
     public void setMotorPosition(double reference) {
-        this.motionMagicPositionControl.Position = reference;
-        this.TalonFX.setControl(this.motionMagicPositionControl);
+        motionMagicPositionControl.Position = reference;
+        TalonFX.setControl(motionMagicPositionControl);
     }
 
     @Override
     public void setMotorVelocity(double reference) {
-        this.motionMagicVelocityControl.Velocity = reference;
-        this.TalonFX.setControl(this.motionMagicVelocityControl);
+        motionMagicVelocityControl.Velocity = reference;
+        TalonFX.setControl(motionMagicVelocityControl);
     }
 
     @Override
     public double getPosition() {
-        this.motorPosition.refresh();
-        return new Rotation2d(this.motorPosition.getValueAsDouble()).getRotations();
+        motorPosition.refresh();
+        return motorPosition.getValueAsDouble();
     }
 
     @Override
     public double getVelocity() {
-        this.motorVelocity.refresh();
-        return this.motorVelocity.getValueAsDouble();
+        motorVelocity.refresh();
+        return motorVelocity.getValueAsDouble();
     }
 
     @Override
     public void setEncoderPosition(double reference) {
-        this.TalonFX.setPosition(reference);
+        TalonFX.setPosition(reference);
     }
 
     @Override
     public void setSpeed(double speed) {
-        this.TalonFX.set(speed);
+        TalonFX.set(speed);
     }
 
     @Override
     public double getSpeed() {
-        return this.TalonFX.get();
+        return TalonFX.get();
     }
 
     public int getID() {
-        return this.TalonFX.getDeviceID();
+        return TalonFX.getDeviceID();
     }
 
     public void follow(TalonFXMotor leader, boolean inverted) {
@@ -85,6 +86,6 @@ public class TalonFXMotor implements PIDMotor {
         if (inverted) {
             aligned = MotorAlignmentValue.Opposed;
         }
-        this.TalonFX.setControl(new Follower(leader.getID(), aligned));
+        TalonFX.setControl(new Follower(leader.getID(), aligned));
     }
 }

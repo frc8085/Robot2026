@@ -26,6 +26,8 @@ public class FlywheelSubsystem extends SubsystemBase {
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast; // Flywheels usually coast when not powered
         config.CurrentLimits.StatorCurrentLimit = FlywheelConstants.kStatorCurrentLimit;
         config.CurrentLimits.SupplyCurrentLimit = FlywheelConstants.kSupplyCurrentLimit;
+        config.CurrentLimits.SupplyCurrentLowerLimit = FlywheelConstants.kSupplyCurrentLowerLimit;
+        config.CurrentLimits.SupplyCurrentLowerTime = FlywheelConstants.kSupplyCurrentLowerTime;
 
         config.MotionMagic.MotionMagicAcceleration = FlywheelConstants.kMotionMagicAcceleration;
         config.MotionMagic.MotionMagicJerk = FlywheelConstants.kMotionMagicJerk;
@@ -42,7 +44,7 @@ public class FlywheelSubsystem extends SubsystemBase {
         flywheelFollow.follow(flywheelMain, true);
     }
     
-    private void setFlywheelRPS(double rps) {    
+    public void setFlywheelRPS(double rps) {    
         flywheelMain.setMotorVelocity(rps);
     }
 
@@ -58,17 +60,18 @@ public class FlywheelSubsystem extends SubsystemBase {
         // M/s x 1/M = 1/s (Radians per second)
         // 1/s X 2PI/s = R/s (Rotations per second)
         double radPerSecond = mps / FlywheelConstants.kFlywheelRadius;
-        return radPerSecond * (2 * Math.PI);
+        return radPerSecond / (2 * Math.PI);
     }
 
     private double RPStoMPS(double rps) {
-        double radPerSecond = rps / (2 * Math.PI);
+        double radPerSecond = rps * (2 * Math.PI);
         return radPerSecond * FlywheelConstants.kFlywheelRadius;
         
     }
 
     public void setFlywheelMetersPerSecond(double mps) {
         // is convert meters per second to rotations per minute
+        System.out.println("shooter1");
         double rps = this.MPStoRPS(mps);
         this.setFlywheelRPS(rps);
     }
@@ -85,8 +88,21 @@ public class FlywheelSubsystem extends SubsystemBase {
         return Math.abs(currentMPS - targetMPS) <= FlywheelConstants.kFlywheelToleranceMPS;
     }
 
+    public void go() {
+        flywheelMain.setSpeed(1);
+    }
+
+    public void stop() {
+        flywheelMain.setSpeed(0);
+    }
+
+    public double getVelocity() {
+        return this.RPStoMPS(this.flywheelMain.getVelocity());
+    }
+
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+        System.out.println(this.getVelocity());
     }
 }
