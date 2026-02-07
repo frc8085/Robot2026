@@ -52,7 +52,7 @@ public class TalonFXMotor implements PIDMotor {
     @Override
     public double getPosition() {
         this.motorPosition.refresh();
-        return new Rotation2d(this.motorPosition.getValueAsDouble()).getRotations();
+        return this.motorPosition.getValueAsDouble();
     }
 
     @Override
