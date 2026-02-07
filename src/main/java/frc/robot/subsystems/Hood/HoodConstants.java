@@ -13,7 +13,7 @@ public final class HoodConstants {
      * accidentally drive the mechanism past its intended limits.
      */
     public static final double kMinHoodAngleDegrees = 0.0;
-    public static final double kMaxHoodAngleDegrees = 30.0;
+    public static final double kMaxHoodAngleDegrees = 45.0;
 
     /*
      * Current limits (amps).
@@ -38,7 +38,7 @@ public final class HoodConstants {
      * NOTE: the sign of this voltage depends on your mechanism. If pressing the zero button
      * moves the hood the wrong direction, flip the sign.
      */
-    public static final double kZeroingVoltageVolts = -1.0;
+    public static final double kZeroingVoltageVolts = -0.5;
     public static final double kZeroingStatorCurrentThresholdAmps = 10.0;
     public static final double kZeroingCurrentTimeSec = 0.15;
 
