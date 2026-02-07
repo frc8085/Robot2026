@@ -16,6 +16,7 @@ import frc.robot.commands.drivetrain.SwerveDriveTeleop;
 import frc.robot.io.IO;
 import frc.robot.subsystems.Drive.DriveSubsystem;
 import frc.robot.subsystems.Flywheel.FlywheelSubsystem;
+import frc.robot.subsystems.Hood.HoodSubsystem;
 import frc.robot.subsystems.Limelight.LimelightSubsystem;
 import frc.robot.commands.flywheel.RunFlywheel;
 
@@ -25,6 +26,7 @@ public class RobotContainer {
 
   public final DriveSubsystem drivetrain = new DriveSubsystem();
   public final FlywheelSubsystem flywheel = new FlywheelSubsystem();
+  public final HoodSubsystem hood = new HoodSubsystem();
   public final LimelightSubsystem limelight = new LimelightSubsystem();
   // public final IntakeSubsystem intake = new IntakeSubsystem();
 
@@ -42,11 +44,12 @@ public class RobotContainer {
     this.drivetrain.setDefaultCommand(
         // IMPLEMENT DEFAULT COMMAND
         new SwerveDriveTeleop(this.drivetrain));
-    RunFlywheel flywheelCommand = new RunFlywheel(flywheel, 58);
-    this.flywheel.setDefaultCommand(flywheelCommand);
+    // RunFlywheel flywheelCommand = new RunFlywheel(flywheel, 58);
+    // this.flywheel.setDefaultCommand(flywheelCommand);
     //this.flywheel.setDefaultCommand(
       //new RunFlywheel(this.flywheel, 10));
 
+    this.hood.setDefaultCommand(new InstantCommand(this.hood::go, this.hood));
     
 
     field = new Field2d();
