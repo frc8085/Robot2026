@@ -89,11 +89,10 @@ public class IO {
                  * - D-pad up: increase hood setpoint by +10 degrees
                  * - D-pad down: decrease hood setpoint by -10 degrees
                  */
-                driverAButton.onTrue(new ZeroHood(robotContainer.hood));
-                driverBButton.onTrue(new InstantCommand(robotContainer.hood::zeroEncoder, robotContainer.hood));
-                driverUpButton.onTrue(new InstantCommand(() -> robotContainer.hood.adjustHoodSetpointDegrees(10.0),
+                operatorAButton.onTrue(new ZeroHood(robotContainer.hood));
+                operatorUpButton.onTrue(new InstantCommand(() -> robotContainer.hood.adjustHoodSetpointDegrees(10.0),
                                 robotContainer.hood));
-                driverDownButton.onTrue(new InstantCommand(() -> robotContainer.hood.adjustHoodSetpointDegrees(-10.0),
+                operatorDownButton.onTrue(new InstantCommand(() -> robotContainer.hood.adjustHoodSetpointDegrees(-10.0),
                                 robotContainer.hood));
         }
 }
