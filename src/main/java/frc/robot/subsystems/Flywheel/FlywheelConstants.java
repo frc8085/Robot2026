@@ -3,6 +3,7 @@ package frc.robot.subsystems.Flywheel;
 public final class FlywheelConstants {
     public static final int kFlywheelMainCanId = 21;
     public static final int kFlywheelFollowerCanID = 22;
+    public static final int kHoodCanId = 23;
     // public static final double kFlywheelMaxMPS = 25; // Example max RPM for the flywheel motor
     // public static final double kFlywheelTargetRPM = 4000.0; // Target RPM for shooting
     public static final double kFlywheelToleranceMPS = 0.5; // Acceptable tolerance for RPM
