@@ -1,93 +1,95 @@
 package frc.robot.io;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.jni.WPIMathJNI;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.commands.drivetrain.*;
-import frc.robot.commands.flywheel.*;
-import frc.robot.subsystems.Flywheel.FlywheelSubsystem;
+import frc.robot.commands.hood.SetHoodAngle;
+import frc.robot.commands.hood.ZeroHood;
 
 public class IO {
 
         public void init(RobotContainer robotContainer) {
 
-                // Additional Buttons to allow for alternate button pushes
-                // final Trigger altButtonDriver = Keymap.Layout.driverRightBumper;
-                final Trigger scoreLeft = Keymap.Layout.operatorLeftBumper;
-                final Trigger scoreRight = Keymap.Layout.operatorRightBumper;
+                /*
+                 * Button bindings live here.
+                 *
+                 * For readability, we follow two rules:
+                 * 1. Trigger variables are named exactly like the button in Keymap.Layout.
+                 * 2. Binding code is short and reads like a sentence: "button.onTrue(do thing)"
+                 */
 
-                // Initialization
-                final Trigger zeroHeadingButton = Keymap.Layout.driverStartButton;
+                /*
+                 * Triggers
+                 *
+                 * We keep the full set of triggers around (even if they are currently unused)
+                 * so it's easy to add bindings later without re-learning the controller map.
+                 */
 
-                // final Trigger zeroElevator = operatorController.start();
-                final Trigger zeroElevator = Keymap.Layout.operatorStartButton;
-                final Trigger limelightTrigger1 = Keymap.Layout.driverXButton;
-                final Trigger limelightTrigger2 = Keymap.Layout.driverBButton;
+                // Driver controller buttons/triggers (named exactly like Keymap.Layout)
+                final Trigger driverAButton = Keymap.Layout.driverAButton;
+                final Trigger driverBButton = Keymap.Layout.driverBButton;
+                final Trigger driverXButton = Keymap.Layout.driverXButton;
+                final Trigger driverYButton = Keymap.Layout.driverYButton;
 
-                // Driver operations
-                final Trigger scoreCoral = Keymap.Layout.driverAButton;
-                final Trigger pickupCoral = Keymap.Layout.operatorDownButton;
-                final Trigger ejectAlgae = Keymap.Layout.driverYButton;
-                final Trigger lockWheels = Keymap.Layout.driverBackButton;
-                final Trigger shootAlgaeNetBlue = Keymap.Layout.driverLeftBumper;
-                // final Trigger left = Keymap.Layout.driverDownButton;
-                // final Trigger right = Keymap.Layout.driverUpButton;
-                final Trigger gorobotrelative = Keymap.Controllers.driverController.leftStick();
-                final Trigger raiseClimber = Keymap.Layout.driverRightButton;
-                final Trigger lowerClimber = Keymap.Layout.driverLeftButton;
+                final Trigger driverLeftBumper = Keymap.Layout.driverLeftBumper;
+                final Trigger driverRightBumper = Keymap.Layout.driverRightBumper;
 
-                // Operator Controls
-                final Trigger intakeCoral = Keymap.Layout.operatorRightTriggerButton;
-                final Trigger dumpCoral = Keymap.Layout.driverLeftTriggerButton;
-                final Trigger altdumpCoral = Keymap.Layout.operatorLeftTriggerButton;
-                final Trigger toggleClimber = Keymap.Layout.operatorBackButton;
+                final Trigger driverLeftTriggerButton = Keymap.Layout.driverLeftTriggerButton;
+                final Trigger driverRightTriggerButton = Keymap.Layout.driverRightTriggerButton;
 
-                // Operator Set Position Controls
-                // final Trigger algaeGround = Keymap.Layout.operatorDownButton;
-                final Trigger algaeReef2 = Keymap.Layout.operatorRightButton;
-                final Trigger coralHandOff = Keymap.Layout.operatorUpButton;
-                // final Trigger coralEject = Keymap.Layout.operatorDownButton;
-                // final Trigger algaeProcessor = Keymap.Layout.operatorLeftButton;
-                final Trigger coralDropOff4 = Keymap.Layout.operatorYButton;
-                final Trigger coralDropOff3 = Keymap.Layout.operatorXButton;
-                final Trigger coralDropOff2 = Keymap.Layout.operatorBButton;
-                final Trigger coralDropOff1 = Keymap.Layout.operatorAButton;
-                final Trigger algaeReef3 = Keymap.Layout.operatorLeftButton;
-                // final Trigger intakeHalf = Keymap.Layout.operatorLeftButton;
+                final Trigger driverStartButton = Keymap.Layout.driverStartButton;
+                final Trigger driverBackButton = Keymap.Layout.driverBackButton;
 
-                // Set Left Joystick for manual elevator/pivot movement
-                final Trigger raiseElevator = Keymap.Controllers.operatorController.axisLessThan(1, -0.25);
-                final Trigger lowerElevator = Keymap.Controllers.operatorController.axisGreaterThan(1, 0.25);
-                final Trigger pivotClockwise = Keymap.Controllers.operatorController.axisGreaterThan(4, 0.25);
-                final Trigger pivotCounterClockwise = Keymap.Controllers.operatorController.axisLessThan(4, -0.25);
+                final Trigger driverUpButton = Keymap.Layout.driverUpButton;
+                final Trigger driverDownButton = Keymap.Layout.driverDownButton;
+                final Trigger driverLeftButton = Keymap.Layout.driverLeftButton;
+                final Trigger driverRightButton = Keymap.Layout.driverRightButton;
 
-                // Initialization
+                final Trigger driverLeftStickButton = Keymap.Layout.driverLeftStickButton;
+                final Trigger driverRightStickButton = Keymap.Layout.driverRightStickButton;
 
-                // Reset heading of robot for field relative drive
-                zeroHeadingButton.onTrue(new InstantCommand(() -> robotContainer.drivetrain.zeroHeading(),
-                                robotContainer.drivetrain));
+                // Operator controller buttons/triggers (named exactly like Keymap.Layout)
+                final Trigger operatorAButton = Keymap.Layout.operatorAButton;
+                final Trigger operatorBButton = Keymap.Layout.operatorBButton;
+                final Trigger operatorXButton = Keymap.Layout.operatorXButton;
+                final Trigger operatorYButton = Keymap.Layout.operatorYButton;
 
-                scoreCoral.whileTrue(new InstantCommand(() -> robotContainer.flywheel.setFlywheelRPS(60),
-                                robotContainer.flywheel));
+                final Trigger operatorLeftBumper = Keymap.Layout.operatorLeftBumper;
+                final Trigger operatorRightBumper = Keymap.Layout.operatorRightBumper;
 
-                limelightTrigger2.whileTrue(new InstantCommand(() -> robotContainer.flywheel.go(),
-                                robotContainer.flywheel));
+                final Trigger operatorLeftTriggerButton = Keymap.Layout.operatorLeftTriggerButton;
+                final Trigger operatorRightTriggerButton = Keymap.Layout.operatorRightTriggerButton;
 
-                limelightTrigger2.whileFalse(new InstantCommand(() -> robotContainer.flywheel.stop(),
-                                robotContainer.flywheel));
+                final Trigger operatorStartButton = Keymap.Layout.operatorStartButton;
+                final Trigger operatorBackButton = Keymap.Layout.operatorBackButton;
 
-                // // Limelight Buttons
+                final Trigger operatorUpButton = Keymap.Layout.operatorUpButton;
+                final Trigger operatorDownButton = Keymap.Layout.operatorDownButton;
+                final Trigger operatorLeftButton = Keymap.Layout.operatorLeftButton;
+                final Trigger operatorRightButton = Keymap.Layout.operatorRightButton;
 
-                lockWheels.whileTrue(new RunCommand(robotContainer.drivetrain::lock, robotContainer.drivetrain));
+                final Trigger operatorLeftStickButton = Keymap.Layout.operatorLeftStickButton;
+                final Trigger operatorRightStickButton = Keymap.Layout.operatorRightStickButton;
+
+                /*
+                 * Axis-based "virtual buttons" (NOT part of Keymap.Layout, but still Triggers).
+                 *
+                 * These create a Trigger when a joystick axis crosses a threshold.
+                 * Axis indices come from WPILib's Xbox controller mapping.
+                 */
+                final Trigger operatorAxis1LessThanNeg025 = Keymap.Controllers.operatorController.axisLessThan(1, -0.25);
+                final Trigger operatorAxis1GreaterThan025 = Keymap.Controllers.operatorController.axisGreaterThan(1, 0.25);
+                final Trigger operatorAxis4GreaterThan025 = Keymap.Controllers.operatorController.axisGreaterThan(4, 0.25);
+                final Trigger operatorAxis4LessThanNeg025 = Keymap.Controllers.operatorController.axisLessThan(4, -0.25);
+
+                /*
+                 * Hood controls
+                 *
+                 * - A: re-zero the hood encoder (wherever it is becomes 0 degrees)
+                 * - Left bumper: move hood to -10 degrees
+                 * - Right bumper: move hood to +10 degrees
+                 */
+                driverAButton.onTrue(new ZeroHood(robotContainer.hood));
+                driverLeftBumper.onTrue(new SetHoodAngle(robotContainer.hood, -10.0));
+                driverRightBumper.onTrue(new SetHoodAngle(robotContainer.hood, 10.0));
         }
 }

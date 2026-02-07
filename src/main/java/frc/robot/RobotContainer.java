@@ -49,9 +49,6 @@ public class RobotContainer {
     //this.flywheel.setDefaultCommand(
       //new RunFlywheel(this.flywheel, 10));
 
-    this.hood.setDefaultCommand(new InstantCommand(this.hood::go, this.hood));
-    
-
     field = new Field2d();
     SmartDashboard.putData("Field", field);
 
