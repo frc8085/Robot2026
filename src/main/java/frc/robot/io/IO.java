@@ -1,8 +1,8 @@
 package frc.robot.io;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
-import frc.robot.commands.hood.SetHoodAngle;
 import frc.robot.commands.hood.ZeroHood;
 
 public class IO {
@@ -84,12 +84,16 @@ public class IO {
                 /*
                  * Hood controls
                  *
-                 * - A: re-zero the hood encoder (wherever it is becomes 0 degrees)
-                 * - Left bumper: move hood to -10 degrees
-                 * - Right bumper: move hood to +10 degrees
+                 * - A: home the hood (drive into hard stop, then zero encoder)
+                 * - B (debug): force-zero the encoder immediately (does NOT move the hood)
+                 * - D-pad up: increase hood setpoint by +10 degrees
+                 * - D-pad down: decrease hood setpoint by -10 degrees
                  */
                 driverAButton.onTrue(new ZeroHood(robotContainer.hood));
-                driverLeftBumper.onTrue(new SetHoodAngle(robotContainer.hood, -10.0));
-                driverRightBumper.onTrue(new SetHoodAngle(robotContainer.hood, 10.0));
+                driverBButton.onTrue(new InstantCommand(robotContainer.hood::zeroEncoder, robotContainer.hood));
+                driverUpButton.onTrue(new InstantCommand(() -> robotContainer.hood.adjustHoodSetpointDegrees(10.0),
+                                robotContainer.hood));
+                driverDownButton.onTrue(new InstantCommand(() -> robotContainer.hood.adjustHoodSetpointDegrees(-10.0),
+                                robotContainer.hood));
         }
 }

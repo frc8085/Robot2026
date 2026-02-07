@@ -3,6 +3,7 @@ package frc.robot.subsystems.Hood;
 import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.lib.TalonFXSMotor;
 
@@ -81,11 +82,27 @@ public class HoodSubsystem extends SubsystemBase {
      * Use {@link #zeroEncoder()} to define where 0 degrees is.
      */
     public void setHoodAngleDegrees(double hoodAngleDegrees) {
-        targetHoodAngleDegrees = hoodAngleDegrees;
+        // Clamp inputs so we never command outside our allowed range.
+        double clampedDegrees = MathUtil.clamp(
+                hoodAngleDegrees,
+                HoodConstants.kMinHoodAngleDegrees,
+                HoodConstants.kMaxHoodAngleDegrees);
+
+        targetHoodAngleDegrees = clampedDegrees;
 
         // CTRE position units for TalonFXS are rotations of the motor sensor.
-        double motorRotations = hoodDegreesToMotorRotations(hoodAngleDegrees);
+        double motorRotations = hoodDegreesToMotorRotations(clampedDegrees);
         hoodMotor.setMotorPosition(motorRotations);
+    }
+
+    /**
+     * Adjust the hood's current setpoint by some delta (degrees).
+     *
+     * Example: delta = +10 increases the target angle by 10 degrees.
+     * This is convenient for D-pad "step" control.
+     */
+    public void adjustHoodSetpointDegrees(double deltaDegrees) {
+        setHoodAngleDegrees(targetHoodAngleDegrees + deltaDegrees);
     }
 
     /**
@@ -125,7 +142,7 @@ public class HoodSubsystem extends SubsystemBase {
      * - hood angle (degrees)
      * - motor sensor position (rotations)
      *
-     * Dagram (driver -> driven, where speed ratio = driverTeeth / drivenTeeth):
+     * Diagram (driver -> driven, where speed ratio = driverTeeth / drivenTeeth):
      *
      *   Motor
      *     |

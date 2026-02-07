@@ -7,6 +7,15 @@ public final class HoodConstants {
     public static final int kHoodCanId = 23;
 
     /*
+     * Allowed hood angle range (degrees).
+     *
+     * We clamp all requested angles into this range so a bad command cannot
+     * accidentally drive the mechanism past its intended limits.
+     */
+    public static final double kMinHoodAngleDegrees = 0.0;
+    public static final double kMaxHoodAngleDegrees = 30.0;
+
+    /*
      * Current limits (amps).
      *
      * These protect the motor, wiring, and breaker by limiting current draw.
