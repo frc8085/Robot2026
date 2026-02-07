@@ -24,6 +24,18 @@ public class HoodSubsystem extends SubsystemBase {
         var config = new TalonFXSConfiguration();
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake; // hood should hold position when not commanded
 
+        /*
+         * Current limits (protects motor/wiring).
+         *
+         * - Stator current: current through the motor itself (torque-producing).
+         * - Supply current: current drawn from the battery through the controller.
+         *
+         */
+        config.CurrentLimits.StatorCurrentLimit = HoodConstants.kStatorCurrentLimitAmps;
+        config.CurrentLimits.SupplyCurrentLimit = HoodConstants.kSupplyCurrentLimitAmps;
+        config.CurrentLimits.SupplyCurrentLowerLimit = HoodConstants.kSupplyCurrentLowerLimitAmps;
+        config.CurrentLimits.SupplyCurrentLowerTime = HoodConstants.kSupplyCurrentLowerTimeSec;
+
         // Best practice: apply Slot0 + MotionMagic using one configuration object, then apply once.
         config.Slot0.kP = HoodConstants.kPositionP;
         config.Slot0.kI = HoodConstants.kPositionI;
@@ -42,6 +54,24 @@ public class HoodSubsystem extends SubsystemBase {
      */
     public void go() {
         hoodMotor.setSpeed(0.1);
+    }
+
+    /**
+     * Open-loop voltage control. The motor will spin continuously at the requested voltage
+     * until another command changes the output (position control, speed, stop, etc.).
+     *
+     * @param volts Motor voltage to apply (typically between -12 and +12).
+     */
+    public void setHoodVoltage(double volts) {
+        hoodMotor.setVoltage(volts);
+    }
+
+    /**
+     * Stator current is the motor phase current. It spikes strongly when the mechanism stalls
+     * (for example, when you drive into a hard stop).
+     */
+    public double getStatorCurrentAmps() {
+        return hoodMotor.getStatorCurrentAmps();
     }
 
     /**

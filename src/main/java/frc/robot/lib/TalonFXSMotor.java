@@ -14,6 +14,7 @@ import com.ctre.phoenix6.signals.MotorAlignmentValue;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Current;
 
 /**
  * Minimal wrapper around CTRE Phoenix 6 {@link TalonFXS} that matches the
@@ -27,11 +28,13 @@ public class TalonFXSMotor implements PIDMotor {
     private final MotionMagicVelocityVoltage motionMagicVelocityControl = new MotionMagicVelocityVoltage(0);
     private final StatusSignal<Angle> motorPosition;
     private final StatusSignal<AngularVelocity> motorVelocity;
+    private final StatusSignal<Current> statorCurrent;
 
     public TalonFXSMotor(int id) {
         talonFXS = new TalonFXS(id, CANBus.roboRIO());
         motorPosition = talonFXS.getPosition();
         motorVelocity = talonFXS.getVelocity();
+        statorCurrent = talonFXS.getStatorCurrent();
 
         // Hard-coded for the 2026 season: we only expect to use TalonFXS with the Minion motor (JST).
         talonFXS.getConfigurator().apply(new CommutationConfigs().withMotorArrangement(MotorArrangementValue.Minion_JST));
@@ -79,6 +82,24 @@ public class TalonFXSMotor implements PIDMotor {
     @Override
     public void setSpeed(double speed) {
         talonFXS.set(speed);
+    }
+
+    /**
+     * Direct voltage output (open-loop).
+     *
+     * This is useful for simple characterization tests or "manual" control where you
+     * want the motor to keep spinning at a fixed voltage regardless of battery sag.
+     */
+    public void setVoltage(double volts) {
+        talonFXS.setVoltage(volts);
+    }
+
+    /**
+     * @return Stator current in amps (motor phase current, correlates strongly with torque/stall).
+     */
+    public double getStatorCurrentAmps() {
+        statorCurrent.refresh();
+        return statorCurrent.getValueAsDouble();
     }
 
     @Override

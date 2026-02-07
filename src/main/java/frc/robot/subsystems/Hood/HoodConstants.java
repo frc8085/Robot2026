@@ -7,6 +7,33 @@ public final class HoodConstants {
     public static final int kHoodCanId = 23;
 
     /*
+     * Current limits (amps).
+     *
+     * These protect the motor, wiring, and breaker by limiting current draw.
+     * Values here are conservative "starting points" and should be tuned on the real robot.
+     */
+    public static final double kStatorCurrentLimitAmps = 15.0;
+    public static final double kSupplyCurrentLimitAmps = 10.0;
+    public static final double kSupplyCurrentLowerLimitAmps = 10.0;
+    public static final double kSupplyCurrentLowerTimeSec = 1.0;
+
+    /*
+     * Homing / zeroing by current spike (driving into a hard stop).
+     *
+     * We apply a small constant voltage until the motor "stalls" against the stop.
+     * Stall = current above a threshold for a short amount of time.
+     *
+     * IMPORTANT: pick a voltage that is strong enough to reach the stop, but not so
+     * strong that it slams the mechanism.
+     *
+     * NOTE: the sign of this voltage depends on your mechanism. If pressing the zero button
+     * moves the hood the wrong direction, flip the sign.
+     */
+    public static final double kZeroingVoltageVolts = -1.0;
+    public static final double kZeroingStatorCurrentThresholdAmps = 10.0;
+    public static final double kZeroingCurrentTimeSec = 0.15;
+
+    /*
      * Position control tuning (CTRE Phoenix 6, Slot0).
      *
      * When we command a position, the motor controller computes:
@@ -63,4 +90,21 @@ public final class HoodConstants {
     public static final int kPulley2Teeth = 23;
     public static final int kPulley3Teeth = 18;
     public static final int kPulley4Teeth = 36;
+
+    static {
+        /*
+         * Fail fast on impossible configurations.
+         *
+         * If the stator current limit is set below the homing current threshold,
+         * the motor controller will clamp current and we will never detect the "stall spike".
+         */
+        if (kZeroingStatorCurrentThresholdAmps >= kStatorCurrentLimitAmps) {
+            throw new IllegalStateException(
+                    "HoodConstants misconfigured: kZeroingStatorCurrentThresholdAmps ("
+                            + kZeroingStatorCurrentThresholdAmps
+                            + ") must be less than kStatorCurrentLimitAmps ("
+                            + kStatorCurrentLimitAmps
+                            + ").");
+        }
+    }
 }
